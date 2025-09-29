@@ -55,7 +55,7 @@ class CameraView(QWidget):
         """Update frame signal."""
         self.model.update_frame()
 
-    def update_plots(self, frame:np.ndarray) -> None:
+    def update_plots(self, frame: np.ndarray) -> None:
         """Update plots."""
         self.ax_img.clear()
         self.ax_img.imshow(frame)
