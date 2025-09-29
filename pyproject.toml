@@ -3,7 +3,7 @@ name = "camera_profile_viewer"
 version = "0.1.0"
 description = "A small application produced by our favorite candidate"
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.11"
 dependencies = [
     "matplotlib>=3.10.5",
     "numpy>=2.3.2",
