@@ -15,22 +15,28 @@ class CameraModel(QObject):
         """Init."""
         super().__init__()
         self.running = False
+        self.x_range = 200
+        self.y_range = 100
 
     def read_frame(self) -> np.ndarray:
         """Read frame."""
-        index = int(time.time() * 10) % 100
-        x, y = np.meshgrid(range(200), range(100))
+        frame_rate = 10
+        amplitude, period = 40, 10
+        sigma_1, sigma_2 = 400, 1000
+        index = int(time.time() * frame_rate) % 100
+        x, y = np.meshgrid(range(self.x_range), range(self.y_range))
         return (
-            np.exp(-(x**2 + (y - 50) ** 2) / 400)
-            + np.exp(-((x - 199) ** 2 + (y - 50) ** 2) / 400)
-            + np.exp(-((x - 2 * index) ** 2 + (y - 50 + np.sin(index / 10) * 40) ** 2) / 1000)
+            np.exp(-(x**2 + (y - self.y_range / 2) ** 2) / sigma_1)
+            + np.exp(-((x - (self.x_range - 1)) ** 2 + (y - self.y_range / 2) ** 2) / sigma_1)
+            + np.exp(
+                -((x - 2 * index) ** 2 + (y - self.y_range / 2 + np.sin(index / period) * amplitude) ** 2) / sigma_2)
         )
 
-    def get_profiles(self, frame:np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+    def get_profiles(self, frame: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
         """Return the profiles of the image along the x and y direction."""
         return frame.mean(axis=0), frame.mean(axis=1)
 
-    def update_frame(self)->None:
+    def update_frame(self) -> None:
         """Update the pyqt signal with the new frame."""
         if self.running:
             frame = self.read_frame()

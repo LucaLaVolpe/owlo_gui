@@ -67,4 +67,5 @@ class CameraView(QWidget):
         self.ax_y.clear()
         self.ax_y.plot(y_profile)
         self.ax_y.set_title("Y Profile")
+        self.fig.tight_layout()
         self.canvas.draw()
